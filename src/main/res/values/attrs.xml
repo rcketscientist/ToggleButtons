@@ -13,9 +13,13 @@
              False will behave much like a RadioGroup, requiring a single child to be checked.
              The default is false.-->
         <attr name="allowUnselected" format="boolean"/>
-        <!-- Defines the radius of the corners clipping the contained buttons. -->
+        <!-- Defines the radius of the corners clipping the contained buttons. Overrides styleMaterial.-->
         <attr name="cornerRadius" format="dimension"/>
+        <!-- Defines the elevation of the group. Overrides styleMaterial.-->
+        <attr name="toggleElevation" format="dimension"/>
         <!-- Styles the group accoridng to Material guidelines (2dp radius corners and 2dp elevation). -->
         <attr name="styleMaterial" format="boolean"/>
+        <!-- Defines the background color of the group. -->
+        <attr name="backgroundColor" format="color"/>
     </declare-styleable>
 </resources>

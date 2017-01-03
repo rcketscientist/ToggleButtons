@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.anthonymandra.widget.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +52,6 @@ public class ToggleGroup extends LinearLayout
     public ToggleGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // retrieve selected radio button as requested by the user in the
-        // XML layout file
         TypedArray attributes = context.obtainStyledAttributes(
                 attrs, R.styleable.ToggleGroup, R.attr.radioButtonStyle, 0);
 
