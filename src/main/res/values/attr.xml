@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToggleGroup">
+        <!-- The id of the child radio button that should be checked by default
+             within this radio group. -->
+        <attr name="checkedButton" format="integer" />
+        <!-- Whether the group should allow multiple selections or not
+             True will behave much like a RadioGroup, allowing only a single child to be checked.
+             False will allow multiple children to be checked.  The default is false.-->
+        <attr name="exclusive" format="boolean"/>
+        <!-- Whether the group should always have a selection
+             True will allow no selection in the group.
+             False will behave much like a RadioGroup, requiring a single child to be checked.
+             The default is false.-->
+        <attr name="allowUnselected" format="boolean"/>
+        <!-- Defines the radius of the corners clipping the contained buttons. -->
+        <attr name="cornerRadius" format="dimension"/>
+        <!-- Styles the group accoridng to Material guidelines (2dp radius corners and 2dp elevation). -->
+        <attr name="styleMaterial" format="boolean"/>
+    </declare-styleable>
+</resources>
