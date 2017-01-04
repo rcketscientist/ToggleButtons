@@ -7,12 +7,22 @@ import android.support.v4.widget.CompoundButtonCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-public class ToggleButton extends android.support.v7.widget.AppCompatRadioButton
-{
-	public ToggleButton(Context context, AttributeSet attrs) {
-		super(context, attrs);
+public class ToggleButton extends android.support.v7.widget.AppCompatRadioButton {
+
+	public ToggleButton(Context context) {
+		this(context, null);
 	}
 
+	public ToggleButton(Context context, AttributeSet attrs) {
+		this(context, attrs, 0);
+	}
+
+	public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr)
+	{
+		super(context, attrs, defStyleAttr);
+	}
+
+	//TODO: Eventually support library will support drawableTint and we can discard the buttonDrawable hack
 	@Override
 	protected void onDraw(Canvas canvas) {
 		final Drawable buttonDrawable = CompoundButtonCompat.getButtonDrawable(this);
@@ -61,5 +71,10 @@ public class ToggleButton extends android.support.v7.widget.AppCompatRadioButton
 				buttonDrawable.draw(canvas);
 			}
 		}
+	}
+
+	@Override
+	public void toggle() {
+		setChecked(!isChecked());	// back to default toggle behavior (can deselect)
 	}
 }

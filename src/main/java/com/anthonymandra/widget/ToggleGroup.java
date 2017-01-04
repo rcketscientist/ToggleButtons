@@ -50,10 +50,20 @@ public class ToggleGroup extends LinearLayout
      * {@inheritDoc}
      */
     public ToggleGroup(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, R.attr.radioButtonStyle, 0);
+    }
+
+    public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr)
+    {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+    {
+        super(context, attrs, defStyleAttr, defStyleRes);
 
         TypedArray attributes = context.obtainStyledAttributes(
-                attrs, R.styleable.ToggleGroup, R.attr.radioButtonStyle, 0);
+                attrs, R.styleable.ToggleGroup, defStyleAttr, defStyleRes);
 
         mExclusive = attributes.getBoolean(R.styleable.ToggleGroup_exclusive, false);
         mAllowUnselected = attributes.getBoolean(R.styleable.ToggleGroup_allowUnselected, false);
