@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="toggle_focus_on">@color/blue_grey_500</color>
+    <color name="toggle_focus_off">@color/focusedBackground</color>
+    <color name="toggle_on">@color/selectedBackground</color>
+    <color name="toggle_pressed">@color/blue_grey_700</color>
+    <color name="toggle_off">@color/unselectedBackground</color>
+
+    <color name="focusedBackground">#d1d1d1</color>
+    <color name="unselectedBackground">#fafafa</color>
+    <color name="selectedBackground">#c8c8c8</color>
+
+    <color name="blue_grey_500">#607D8B</color>
+    <color name="blue_grey_700">#455A64</color>
+
+</resources>

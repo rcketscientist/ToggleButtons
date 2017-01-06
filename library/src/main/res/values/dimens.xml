@@ -7,4 +7,7 @@
 
 	<dimen name="flatElevation">0dp</dimen>
 	<dimen name="flatCornerRadius">0dp</dimen>
+
+	<dimen name="testElevation">10dp</dimen>
+	<dimen name="testCornerRadius">10dp</dimen>
 </resources>

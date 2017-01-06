@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ToggleButton">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/toggle_background</item>
+    </style>
+
+    <style name="ImageToggleButton" parent="ToggleButton">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget"/>
+    <style name="Widget.Material" parent="Widget" />
+    <style name="Widget.Flat" parent="Widget" />
+
+    <style name="Widget.Material.ToggleGroup" parent="Widget.Material">
+        <item name="toggleElevation">@dimen/materialElevation</item>
+        <item name="cornerRadius">@dimen/materialCornerRadius</item>
+    </style>
+
+    <style name="Widget.Flat.ToggleGroup" parent="Widget.Flat">
+        <item name="toggleElevation">@dimen/flatElevation</item>
+        <item name="cornerRadius">@dimen/flatCornerRadius</item>
+    </style>
+
+    <style name="Widget.Test.ToggleGroup" parent="Widget.Flat">
+        <item name="toggleElevation">@dimen/testElevation</item>
+        <item name="cornerRadius">@dimen/testCornerRadius</item>
+    </style>
+
+    <style name="Widget.Material.ToggleButton" parent="ImageToggleButton">
+        <item name="android:layout_width">@dimen/defImageToggleSize</item>
+        <item name="android:layout_height">@dimen/defImageToggleSize</item>
+    </style>
+
+</resources>

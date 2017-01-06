@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ExposedRoundRectDrawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -51,15 +48,14 @@ public class ToggleGroup extends LinearLayout
 
     public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr)
     {
-        this(context, attrs, defStyleAttr, R.style.Widget_Material_ToggleGroup);
-    }
-
-    public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
-    {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
 
         TypedArray attributes = context.obtainStyledAttributes(
-                attrs, R.styleable.ToggleGroup, defStyleAttr, defStyleRes);
+                attrs, R.styleable.ToggleGroup, defStyleAttr, R.style.Widget_Material_ToggleGroup);
+
+        final int index = attributes.getInt(R.styleable.ToggleGroup_orientation, HORIZONTAL);
+        //noinspection WrongConstant
+        setOrientation(index);
 
         mExclusive = attributes.getBoolean(R.styleable.ToggleGroup_exclusive, false);
         mAllowUnselected = attributes.getBoolean(R.styleable.ToggleGroup_allowUnselected, false);
@@ -248,8 +244,6 @@ public class ToggleGroup extends LinearLayout
      *
      * @see #check(int)
      * @see #clearChecked()
-     *
-     * @attr ref android.R.styleable#ToggleGroup_checkedButton
      */
     @IdRes
     public int getCheckedId() {
@@ -267,7 +261,6 @@ public class ToggleGroup extends LinearLayout
      * @see #check(int)
      * @see #clearChecked()
      *
-     * @attr ref android.R.styleable#ToggleGroup_checkedButton
      */
     public @Nullable
     int[] getCheckedIds() {

@@ -4,6 +4,10 @@
         <!-- The id of the child radio button that should be checked by default
              within this radio group. -->
         <attr name="checkedButton" format="integer" />
+        <!-- Should the radio group be a column or a row?  Use "horizontal"
+             for a row, "vertical" for a column.  The default is
+             horizontal. -->
+        <attr name="orientation" />
         <!-- Whether the group should allow multiple selections or not
              True will behave much like a RadioGroup, allowing only a single child to be checked.
              False will allow multiple children to be checked.  The default is false.-->
@@ -21,8 +25,15 @@
         <attr name="backgroundColor" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="ToggleTheme">
-        <attr name="toggleGroupStyle" format="reference"/>
-        <attr name="toggleButtonStyle" format="reference"/>
-    </declare-styleable>
+    <!-- Standard orientation constant. -->
+    <attr name="orientation">
+        <!-- Defines an horizontal widget. -->
+        <enum name="horizontal" value="0" />
+        <!-- Defines a vertical widget. -->
+        <enum name="vertical" value="1" />
+    </attr>
+
+    <attr name="toggleGroupStyle" format="reference"/>
+    <attr name="toggleButtonStyle" format="reference"/>
+
 </resources>
