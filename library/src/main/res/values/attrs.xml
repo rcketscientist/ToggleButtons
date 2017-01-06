@@ -17,9 +17,12 @@
         <attr name="cornerRadius" format="dimension"/>
         <!-- Defines the elevation of the group. Overrides styleMaterial.-->
         <attr name="toggleElevation" format="dimension"/>
-        <!-- Styles the group accoridng to Material guidelines (2dp radius corners and 2dp elevation). -->
-        <attr name="styleMaterial" format="boolean"/>
         <!-- Defines the background color of the group. -->
         <attr name="backgroundColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ToggleTheme">
+        <attr name="toggleGroupStyle" format="reference"/>
+        <attr name="toggleButtonStyle" format="reference"/>
     </declare-styleable>
 </resources>

@@ -14,7 +14,7 @@ public class ToggleButton extends android.support.v7.widget.AppCompatRadioButton
 	}
 
 	public ToggleButton(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
+		this(context, attrs, R.style.Widget_Material_ToggleButton);
 	}
 
 	public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr)

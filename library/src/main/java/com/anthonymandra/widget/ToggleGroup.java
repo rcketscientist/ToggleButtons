@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ExposedRoundRectDrawable;
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -37,25 +39,19 @@ public class ToggleGroup extends LinearLayout
     private ToggleGroup.OnCheckedChangeListener mOnCheckedChangeListener;
     private PassThroughHierarchyChangeListener mPassThroughListener;
 
-    /**
-     * {@inheritDoc}
-     */
     public ToggleGroup(Context context) {
         super(context);
         setOrientation(HORIZONTAL);
         init();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ToggleGroup(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.radioButtonStyle, 0);
+        this(context, attrs, R.attr.toggleGroupStyle);
     }
 
     public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr)
     {
-        this(context, attrs, defStyleAttr, 0);
+        this(context, attrs, defStyleAttr, R.style.Widget_Material_ToggleGroup);
     }
 
     public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
@@ -68,18 +64,10 @@ public class ToggleGroup extends LinearLayout
         mExclusive = attributes.getBoolean(R.styleable.ToggleGroup_exclusive, false);
         mAllowUnselected = attributes.getBoolean(R.styleable.ToggleGroup_allowUnselected, false);
 
-        float defaultDimension = 0;
-        final boolean material = attributes.getBoolean(R.styleable.ToggleGroup_styleMaterial, false);
-        if (material)
-        {
-            defaultDimension = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics());
-        }
+        final float cornerRadius = attributes.getDimension(R.styleable.ToggleGroup_cornerRadius, 0);
+        final float elevation = attributes.getDimension(R.styleable.ToggleGroup_toggleElevation, 0);
 
-        final float cornerRadius = attributes.getDimension(R.styleable.ToggleGroup_cornerRadius, defaultDimension);
-        final float elevation = attributes.getDimension(R.styleable.ToggleGroup_toggleElevation, defaultDimension);
-
-        if (elevation > 0)
-            setElevation(elevation);
+        setElevation(elevation);
 
         // This creates a background which is important for both elevation shadow and rounded corner clipping
         // TODO: Copying CardView atm because we know it creates the rounded corners.  We could likely simplify this.
@@ -201,7 +189,10 @@ public class ToggleGroup extends LinearLayout
     private void checkExclusive(@IdRes int id) {
         // don't even bother
         if (id != -1 && (id == mCheckedId)) {
-            return;
+            if(!mAllowUnselected)   //If we don't allow unselected, block unchecking
+                setCheckedStateForView(mCheckedId, true);
+            else
+                return;
         }
 
         if (mCheckedId != -1) {
@@ -221,7 +212,7 @@ public class ToggleGroup extends LinearLayout
     }
 
     private void removeCheckedId(@IdRes int id) {
-        mCheckedIds.remove(id);
+        mCheckedIds.remove((Integer)id);
         fireCheckedChanged();
     }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="defImageToggleSize">48dp</dimen>
+
+	<dimen name="materialElevation">2dp</dimen>
+	<dimen name="materialCornerRadius">2dp</dimen>
+
+	<dimen name="flatElevation">0dp</dimen>
+	<dimen name="flatCornerRadius">0dp</dimen>
+</resources>
