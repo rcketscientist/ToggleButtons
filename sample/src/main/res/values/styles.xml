@@ -9,4 +9,8 @@
 		<item name="toggleGroupStyle">@style/Widget.Material.ToggleGroup</item>
 	</style>
 
+	<style name="ContrastToggle" parent="Widget.Material.ToggleButton">
+		<item name="android:background">@drawable/contrast_background</item>
+	</style>
+
 </resources>

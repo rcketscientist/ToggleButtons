@@ -1,4 +1,4 @@
-package com.anthonymandra.widget;
+package android.support.v7.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -6,12 +6,13 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.ExposedRoundRectDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+
+import com.anthonymandra.widget.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class ToggleGroup extends LinearLayout
                     ? getResources().getColor(android.support.v7.cardview.R.color.cardview_light_background)
                     : getResources().getColor(android.support.v7.cardview.R.color.cardview_dark_background));
         }
-        final ExposedRoundRectDrawable background = new ExposedRoundRectDrawable(backgroundColor, cornerRadius);
+        final RoundRectDrawable background = new RoundRectDrawable(backgroundColor, cornerRadius);
         setBackgroundDrawable(background);
         setClipToOutline(true);
 

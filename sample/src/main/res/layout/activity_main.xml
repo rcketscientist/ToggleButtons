@@ -22,7 +22,7 @@
 
 	<com.anthonymandra.widget.ToggleGroup
 		android:id="@+id/groupNotExclusive"
-		style="@style/Widget.Test.ToggleGroup"
+		style="@style/Widget.Material.ToggleGroup"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/textNotExclusive"
