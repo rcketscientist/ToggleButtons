@@ -33,6 +33,13 @@
         <enum name="vertical" value="1" />
     </attr>
 
+    <declare-styleable name="ToggleButton">
+        <!-- The text for the button when it is checked. -->
+        <attr name="textOn" format="string" />
+        <!-- The text for the button when it is not checked. -->
+        <attr name="textOff" format="string" />
+    </declare-styleable>
+
     <attr name="toggleGroupStyle" format="reference"/>
     <attr name="toggleButtonStyle" format="reference"/>
 
