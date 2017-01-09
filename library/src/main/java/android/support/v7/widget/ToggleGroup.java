@@ -3,7 +3,9 @@ package android.support.v7.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -37,6 +39,11 @@ public class ToggleGroup extends LinearLayout
     private ToggleGroup.OnCheckedChangeListener mOnCheckedChangeListener;
     private PassThroughHierarchyChangeListener mPassThroughListener;
 
+    private Drawable mDivider;
+    private int mDividerWidth;
+    private int mDividerHeight;
+    private int mDividerPadding;
+
     public ToggleGroup(Context context) {
         super(context);
         setOrientation(HORIZONTAL);
@@ -60,6 +67,7 @@ public class ToggleGroup extends LinearLayout
 
         mExclusive = attributes.getBoolean(R.styleable.ToggleGroup_exclusive, false);
         mAllowUnselected = attributes.getBoolean(R.styleable.ToggleGroup_allowUnselected, false);
+        setDividerDrawable(attributes.getDrawable(R.styleable.ToggleGroup_divider));
 
         final float cornerRadius = attributes.getDimension(R.styleable.ToggleGroup_cornerRadius, 0);
         final float elevation = attributes.getDimension(R.styleable.ToggleGroup_toggleElevation, 0);
@@ -462,4 +470,106 @@ public class ToggleGroup extends LinearLayout
             }
         }
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (mDivider == null) {
+            return;
+        }
+
+        if (getOrientation() == VERTICAL) {
+            drawDividersVertical(canvas);
+        } else {
+            drawDividersHorizontal(canvas);
+        }
+    }
+
+    /**
+     * Set a drawable to be used as a divider between items.
+     *
+     * @param divider Drawable that will divide each item.
+     *
+     * @see #setShowDividers(int)
+     *
+     * @attr ref android.R.styleable#LinearLayout_divider
+     */
+    public void setDividerDrawable(Drawable divider) {
+        if (divider == mDivider) {
+            return;
+        }
+        mDivider = divider;
+        if (divider != null) {
+            mDividerWidth = divider.getIntrinsicWidth();
+            mDividerHeight = divider.getIntrinsicHeight();
+        } else {
+            mDividerWidth = 0;
+            mDividerHeight = 0;
+        }
+        setWillNotDraw(divider == null);
+        requestLayout();
+    }
+
+    CompoundButton getVisibleViewPriorToIndex(int index) {
+        index--;
+        while (index >= 0)
+        {
+            final CompoundButton previous = (CompoundButton) getChildAt(index);
+            if (previous.getVisibility() != GONE)
+                return previous;
+            index--;
+        }
+        return null;
+    }
+
+    void drawDividersVertical(Canvas canvas) {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final CompoundButton child = (CompoundButton) getChildAt(i);
+            if (child.getVisibility() == GONE)
+                continue;
+            final CompoundButton previous = getVisibleViewPriorToIndex(i);
+            if (previous == null)
+                continue;
+
+            // If both are checked, add a divider
+            if (child.isChecked() && previous.isChecked())
+            {
+                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                final int top = child.getTop() - lp.topMargin - mDividerHeight;
+                drawHorizontalDivider(canvas, top);
+            }
+        }
+    }
+
+    void drawDividersHorizontal(Canvas canvas) {
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final CompoundButton child = (CompoundButton) getChildAt(i);
+            if (child.getVisibility() == GONE)
+                continue;
+            final CompoundButton previous = getVisibleViewPriorToIndex(i);
+            if (previous == null)
+                continue;
+
+            // If both are checked, add a divider
+            if (child.isChecked() && previous.isChecked()) {
+                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                final int left = child.getLeft() - lp.leftMargin - mDividerWidth;
+                drawVerticalDivider(canvas, left);
+            }
+        }
+    }
+
+    void drawHorizontalDivider(Canvas canvas, int top) {
+        mDivider.setBounds(getPaddingLeft() + mDividerPadding, top,
+                getWidth() - getPaddingRight() - mDividerPadding, top + mDividerHeight);
+        mDivider.draw(canvas);
+    }
+
+    void drawVerticalDivider(Canvas canvas, int left) {
+        mDivider.setBounds(left, getPaddingTop() + mDividerPadding,
+                left + mDividerWidth, getHeight() - getPaddingBottom() - mDividerPadding);
+        mDivider.draw(canvas);
+    }
+
 }

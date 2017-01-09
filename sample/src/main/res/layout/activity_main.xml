@@ -14,23 +14,46 @@
 	tools:context="com.anthonymandra.widget.togglesample.MainActivity"
 	tools:ignore="HardcodedText">
 
-	<TextView
-		android:id="@+id/textNotExclusive"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="exclusive = false (default)"/>
-
-	<com.anthonymandra.widget.ToggleGroup
-		android:id="@+id/groupNotExclusive"
+	<android.support.v7.widget.ToggleGroup
+		android:id="@+id/groupNotExclusiveH"
 		style="@style/Widget.Material.ToggleGroup"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/textNotExclusive"
-		android:layout_alignParentStart="true">
+		android:layout_alignParentStart="true"
+		android:layout_margin="2dp"
+		app:divider="?android:attr/dividerVertical">
 
 		<android.support.v7.widget.ToggleButton
 			style="@style/Widget.Material.ToggleButton"
-			android:button="@drawable/ic_format_bold_black_24px" />
+			android:button="@drawable/ic_format_bold_black_24px"
+			android:checked="true"/>
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_italic_black_24px"
+			android:checked="true"/>
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_underlined_black_24px"/>
+
+	</android.support.v7.widget.ToggleGroup>
+
+	<android.support.v7.widget.ToggleGroup
+		android:id="@+id/groupNotExclusiveV"
+		style="@style/Widget.Material.ToggleGroup"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentStart="true"
+		android:layout_margin="2dp"
+		app:orientation="vertical"
+		android:layout_below="@+id/groupNotExclusiveH"
+		app:divider="?android:attr/dividerHorizontal">
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_bold_black_24px"
+			android:checked="true"/>
 
 		<android.support.v7.widget.ToggleButton
 			style="@style/Widget.Material.ToggleButton"
@@ -38,26 +61,22 @@
 
 		<android.support.v7.widget.ToggleButton
 			style="@style/Widget.Material.ToggleButton"
-			android:button="@drawable/ic_format_underlined_black_24px"/>
+			android:button="@drawable/ic_format_underlined_black_24px"
+			android:checked="true"/>
 
-	</com.anthonymandra.widget.ToggleGroup>
+	</android.support.v7.widget.ToggleGroup>
 
-	<TextView
-		android:id="@+id/textExclusive"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="exclusive = true"
-		android:layout_below="@id/groupNotExclusive"/>
-
-	<com.anthonymandra.widget.ToggleGroup
-		android:id="@+id/groupExclusive"
+	<android.support.v7.widget.ToggleGroup
+		android:id="@+id/groupExclusiveH"
 		style="@style/Widget.Material.ToggleButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:exclusive="true"
-		android:layout_below="@+id/textExclusive"
+		android:layout_below="@+id/groupNotExclusiveV"
 		android:layout_alignParentStart="true"
-		app:orientation="vertical">
+		app:orientation="horizontal"
+		android:layout_margin="2dp"
+		app:divider="?android:attr/dividerHorizontal"> <!-- Should do nothing on exclusive-->
 
 		<android.support.v7.widget.ToggleButton
 			style="@style/Widget.Material.ToggleButton"
@@ -75,11 +94,41 @@
 			style="@style/Widget.Material.ToggleButton"
 			android:button="@drawable/ic_format_align_justify_black_24px"/>
 
-	</com.anthonymandra.widget.ToggleGroup>
+	</android.support.v7.widget.ToggleGroup>
+
+	<android.support.v7.widget.ToggleGroup
+		android:id="@+id/groupExclusiveV"
+		style="@style/Widget.Material.ToggleButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:exclusive="true"
+		android:layout_below="@+id/groupExclusiveH"
+		android:layout_alignParentStart="true"
+		app:orientation="vertical"
+		android:layout_margin="2dp"
+		app:divider="?android:attr/dividerVertical"> <!-- Should do nothing on exclusive -->
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_align_left_black_24px"/>
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_align_center_black_24px"/>
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_align_right_black_24px"/>
+
+		<android.support.v7.widget.ToggleButton
+			style="@style/Widget.Material.ToggleButton"
+			android:button="@drawable/ic_format_align_justify_black_24px"/>
+
+	</android.support.v7.widget.ToggleGroup>
 
 	<android.support.v7.widget.ToggleButton
 		style="@style/Widget.Material.ToggleButton"
-		android:layout_below="@id/groupExclusive"
+		android:layout_below="@id/groupExclusiveV"
 		app:textOff="off"
 		app:textOn="on"
 		android:layout_height="48dp"

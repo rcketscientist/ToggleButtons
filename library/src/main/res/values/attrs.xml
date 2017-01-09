@@ -23,6 +23,8 @@
         <attr name="toggleElevation" format="dimension"/>
         <!-- Defines the background color of the group. -->
         <attr name="backgroundColor" format="color"/>
+        <!-- Displays a divider between checked buttons. -->
+        <attr name="divider" format="reference"/>
     </declare-styleable>
 
     <!-- Standard orientation constant. -->
