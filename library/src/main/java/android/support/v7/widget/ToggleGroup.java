@@ -39,10 +39,8 @@ public class ToggleGroup extends LinearLayout
     private ToggleGroup.OnCheckedChangeListener mOnCheckedChangeListener;
     private PassThroughHierarchyChangeListener mPassThroughListener;
 
-    private Drawable mDivider;
     private int mDividerWidth;
     private int mDividerHeight;
-    private int mDividerPadding;
 
     public ToggleGroup(Context context) {
         super(context);
@@ -51,11 +49,11 @@ public class ToggleGroup extends LinearLayout
     }
 
     public ToggleGroup(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.toggleGroupStyle);
+//        this(context, attrs, R.attr.toggleGroupStyle); // The designer theme errors are annoying as hell
+        this(context, attrs, 0);
     }
 
-    public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray attributes = context.obtainStyledAttributes(
@@ -67,7 +65,6 @@ public class ToggleGroup extends LinearLayout
 
         mExclusive = attributes.getBoolean(R.styleable.ToggleGroup_exclusive, false);
         mAllowUnselected = attributes.getBoolean(R.styleable.ToggleGroup_allowUnselected, false);
-        setDividerDrawable(attributes.getDrawable(R.styleable.ToggleGroup_divider));
 
         final float cornerRadius = attributes.getDimension(R.styleable.ToggleGroup_cornerRadius, 0);
         final float elevation = attributes.getDimension(R.styleable.ToggleGroup_toggleElevation, 0);
@@ -98,7 +95,7 @@ public class ToggleGroup extends LinearLayout
 
         int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
         if (value != View.NO_ID) {
-            mCheckedId = value; // We set this regardless to help with designer
+            mCheckedId = value; // We set this even if not exclusive to help with designer
 
             if (mExclusive)
                 mCheckedIds.add(value);
@@ -189,10 +186,13 @@ public class ToggleGroup extends LinearLayout
             removeCheckedId(id);
         else
             addCheckedId(id);
+
+        // If this group has dividers, request a redraw
+        if (hasDivider())
+            requestLayout();
     }
 
     private void checkExclusive(@IdRes int id) {
-        // don't even bother
         if (id != -1 && (id == mCheckedId)) {
             if(!mAllowUnselected)   //If we don't allow unselected, block unchecking
                 setCheckedStateForView(mCheckedId, true);
@@ -247,7 +247,10 @@ public class ToggleGroup extends LinearLayout
 
     /**
      * <p>Returns the identifier of the selected radio button in this group.
-     * Upon empty selection, the returned value is -1.</p>
+     * Upon empty selection, the returned value is -1.
+     *
+     * Note: This throws an error when the group is <b>NOT</b> <i>exclusive</i>.  In a multi-select group
+     * a single checked id is undefined.</p>
      *
      * @return the unique id of the selected radio button in this group
      *
@@ -271,8 +274,9 @@ public class ToggleGroup extends LinearLayout
      * @see #clearChecked()
      *
      */
-    public @Nullable
-    int[] getCheckedIds() {
+    @Nullable
+    @IdRes
+    public int[] getCheckedIds() {
         if (mCheckedIds. size() == 0)
             return null;
 
@@ -473,7 +477,7 @@ public class ToggleGroup extends LinearLayout
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mDivider == null) {
+        if (getDividerDrawable() == null) {
             return;
         }
 
@@ -490,14 +494,10 @@ public class ToggleGroup extends LinearLayout
      * @param divider Drawable that will divide each item.
      *
      * @see #setShowDividers(int)
-     *
-     * @attr ref android.R.styleable#LinearLayout_divider
      */
+    @Override
     public void setDividerDrawable(Drawable divider) {
-        if (divider == mDivider) {
-            return;
-        }
-        mDivider = divider;
+        // We need our own copies of the dimensions
         if (divider != null) {
             mDividerWidth = divider.getIntrinsicWidth();
             mDividerHeight = divider.getIntrinsicHeight();
@@ -505,11 +505,14 @@ public class ToggleGroup extends LinearLayout
             mDividerWidth = 0;
             mDividerHeight = 0;
         }
-        setWillNotDraw(divider == null);
-        requestLayout();
+        super.setDividerDrawable(divider);
     }
 
-    CompoundButton getVisibleViewPriorToIndex(int index) {
+    protected boolean hasDivider() {
+        return getDividerDrawable() != null;
+    }
+
+    CompoundButton getVisibleViewBeforeChildAt(int index) {
         index--;
         while (index >= 0)
         {
@@ -521,19 +524,32 @@ public class ToggleGroup extends LinearLayout
         return null;
     }
 
+    /**
+     * Determines where to position dividers between children. Note: this is an 'illegal' override
+     * of a hidden method.
+     *
+     * @param childIndex Index of child to check for preceding divider
+     * @return true if there should be a divider before the child at childIndex
+     */
+    protected boolean hasDividerBeforeChildAt(int childIndex) {
+        final CompoundButton child = (CompoundButton) getChildAt(childIndex);
+        if (child == null)
+            return false;
+        if (child.getVisibility() == GONE)
+            return false;
+        final CompoundButton previous = getVisibleViewBeforeChildAt(childIndex);
+        if (previous == null)
+            return false;
+
+        // If both are checked, add a divider
+        return child.isChecked() && previous.isChecked();
+    }
+
     void drawDividersVertical(Canvas canvas) {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             final CompoundButton child = (CompoundButton) getChildAt(i);
-            if (child.getVisibility() == GONE)
-                continue;
-            final CompoundButton previous = getVisibleViewPriorToIndex(i);
-            if (previous == null)
-                continue;
-
-            // If both are checked, add a divider
-            if (child.isChecked() && previous.isChecked())
-            {
+            if (hasDividerBeforeChildAt(i)) {
                 final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
                 final int top = child.getTop() - lp.topMargin - mDividerHeight;
                 drawHorizontalDivider(canvas, top);
@@ -545,14 +561,7 @@ public class ToggleGroup extends LinearLayout
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             final CompoundButton child = (CompoundButton) getChildAt(i);
-            if (child.getVisibility() == GONE)
-                continue;
-            final CompoundButton previous = getVisibleViewPriorToIndex(i);
-            if (previous == null)
-                continue;
-
-            // If both are checked, add a divider
-            if (child.isChecked() && previous.isChecked()) {
+            if (hasDividerBeforeChildAt(i)) {
                 final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
                 final int left = child.getLeft() - lp.leftMargin - mDividerWidth;
                 drawVerticalDivider(canvas, left);
@@ -561,15 +570,21 @@ public class ToggleGroup extends LinearLayout
     }
 
     void drawHorizontalDivider(Canvas canvas, int top) {
-        mDivider.setBounds(getPaddingLeft() + mDividerPadding, top,
-                getWidth() - getPaddingRight() - mDividerPadding, top + mDividerHeight);
-        mDivider.draw(canvas);
+        final Drawable divider = getDividerDrawable();
+        final int dividerPadding = getDividerPadding();
+
+        divider.setBounds(getPaddingLeft() + dividerPadding, top,
+                getWidth() - getPaddingRight() - dividerPadding, top + mDividerHeight);
+        divider.draw(canvas);
     }
 
     void drawVerticalDivider(Canvas canvas, int left) {
-        mDivider.setBounds(left, getPaddingTop() + mDividerPadding,
-                left + mDividerWidth, getHeight() - getPaddingBottom() - mDividerPadding);
-        mDivider.draw(canvas);
+        final Drawable divider = getDividerDrawable();
+        final int dividerPadding = getDividerPadding();
+
+        divider.setBounds(left, getPaddingTop() + dividerPadding,
+                left + mDividerWidth, getHeight() - getPaddingBottom() - dividerPadding);
+        divider.draw(canvas);
     }
 
 }

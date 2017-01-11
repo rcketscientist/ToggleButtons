@@ -14,4 +14,7 @@
     <color name="blue_grey_500">#607D8B</color>
     <color name="blue_grey_700">#455A64</color>
 
+    <!-- This is the color of the divider in the guideline, however it's likely achieved via tint not specific color-->
+    <color name="dividerColorDark">#a8a8a8</color>
+
 </resources>

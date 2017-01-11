@@ -31,7 +31,9 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 	}
 
 	public ToggleButton(Context context, AttributeSet attrs) {
-		this(context, attrs, R.style.Widget_Material_ToggleButton);
+//		this(context, attrs, R.style.Widget_Material_ToggleButton); // The designer theme errors are annoying as hell
+		this(context, attrs, 0);
+
 	}
 
 	public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -40,7 +42,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 		mCompoundButtonHelper.loadFromAttributes(attrs, defStyleAttr);
 
 		final TypedArray a = context.obtainStyledAttributes(
-				attrs, R.styleable.ToggleButton, defStyleAttr, 0);
+				attrs, R.styleable.ToggleButton, defStyleAttr, R.style.Widget_Material_ToggleButton);
 
 		mTextOn = a.getText(R.styleable.ToggleButton_textOn);
 		mTextOff = a.getText(R.styleable.ToggleButton_textOff);
@@ -49,7 +51,6 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 		a.recycle();
 	}
 
-	//TODO: Eventually support library will support drawableTint and we can discard the buttonDrawable hack
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// If there's text of any sort resort to CompoundButton#onDraw
@@ -101,9 +102,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 					background.setHotspotBounds(left, top, right, bottom);
 				}
 
-				if (buttonDrawable != null) {
-					buttonDrawable.draw(canvas);
-				}
+				buttonDrawable.draw(canvas);
 			}
 		}
 	}
@@ -185,10 +184,6 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 				: value;
 	}
 
-	/**
-	 * This should be accessed from {@link android.support.v4.widget.CompoundButtonCompat}
-	 * @hide
-	 */
 	@RestrictTo(LIBRARY_GROUP)
 	@Override
 	public void setSupportButtonTintList(@Nullable ColorStateList tint) {
@@ -197,10 +192,6 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 		}
 	}
 
-	/**
-	 * This should be accessed from {@link android.support.v4.widget.CompoundButtonCompat}
-	 * @hide
-	 */
 	@RestrictTo(LIBRARY_GROUP)
 	@Nullable
 	@Override
@@ -210,10 +201,6 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 				: null;
 	}
 
-	/**
-	 * This should be accessed from {@link android.support.v4.widget.CompoundButtonCompat}
-	 * @hide
-	 */
 	@RestrictTo(LIBRARY_GROUP)
 	@Override
 	public void setSupportButtonTintMode(@Nullable PorterDuff.Mode tintMode) {
@@ -222,10 +209,6 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 		}
 	}
 
-	/**
-	 * This should be accessed from {@link android.support.v4.widget.CompoundButtonCompat}
-	 * @hide
-	 */
 	@RestrictTo(LIBRARY_GROUP)
 	@Nullable
 	@Override
@@ -234,20 +217,4 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 				? mCompoundButtonHelper.getSupportButtonTintMode()
 				: null;
 	}
-
-	/* Custom support library methods */
-
-/*	private void tint(Drawable d, int color, PorterDuff.Mode tintMode) {
-		boolean isTintable = d != null && tintMode != null;
-		if (!isTintable) {
-			return;
-		}
-		TintInfo ti = new TintInfo();
-		ti.mTintMode = tintMode;
-		ti.mTintList = ColorStateList.valueOf(color);
-		ti.mHasTintList = true;
-		ti.mHasTintMode = true;
-
-		TintManager.tintDrawable(d, ti, new int[]{0});
-	}*/
 }
