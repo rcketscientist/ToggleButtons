@@ -40,7 +40,7 @@
         <attr name="textOff" format="string" />
     </declare-styleable>
 
-    <attr name="toggleGroupStyle" format="reference"/>
-    <attr name="toggleButtonStyle" format="reference"/>
+    <!--<attr name="toggleGroupStyle" format="reference"/>-->
+    <!--<attr name="toggleButtonStyle" format="reference"/>-->
 
 </resources>
