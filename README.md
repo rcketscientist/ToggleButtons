@@ -6,7 +6,9 @@ When no text is present they will use a custom draw that allows proper image ali
 
 Library is currently API 21+, but can be ported to 11+ (possibly 7 or 9).
 
-![screenshot_1483824949](https://cloud.githubusercontent.com/assets/4026030/21745370/9b644a8c-d52a-11e6-9000-9c7fdbd0d200.png)
+![screenshot_1484163201](https://cloud.githubusercontent.com/assets/4026030/21863352/63fa290c-d83d-11e6-9210-4925986aab51.png)
 
 <hr>
+<b>Official Material Guidelines</b>
+
 ![materialtoggle](https://cloud.githubusercontent.com/assets/4026030/21650177/6c1a7536-d2a4-11e6-8d9f-eb523a7bae8f.png)
