@@ -54,8 +54,9 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// If there's text of any sort resort to CompoundButton#onDraw
-		if (getText() != null || getTextOff() != null || getTextOff() != null)
-		{
+		if (getText() != null && getText().length() > 0 ||
+			getTextOff() != null && getTextOff().length() > 0 ||
+			getTextOff() != null && getTextOn().length() > 0) {
 			super.onDraw(canvas);
 		}
 		// Otherwise override CompoundButton#onDraw entirely to allow properly aligned image toggles
