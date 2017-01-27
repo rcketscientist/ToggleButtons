@@ -159,6 +159,28 @@ public class ToggleGroup extends LinearLayout
     }
 
     /**
+     * Pauses the listener in the case of multiple updates
+     */
+    protected void pauseListener() {
+        mProtectFromCheckedChange = true;
+    }
+
+    /**
+     * Resumes the listener.  Does not fire listener.
+     */
+    protected void resumeListener() {
+        mProtectFromCheckedChange = false;
+    }
+
+    /**
+     * Resumes and fires the listener
+     */
+    protected void resumeAndFireListener() {
+        mProtectFromCheckedChange = false;
+        fireCheckedChanged();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -212,10 +234,14 @@ public class ToggleGroup extends LinearLayout
     {
         if (id == -1)
             removeAllChecked();
-        else if (mCheckedIds.contains(id))
+        else if (mCheckedIds.contains(id)) {
+            setCheckedStateForView(id, false);
             removeCheckedId(id);
-        else
+        }
+        else {
+            setCheckedStateForView(id, true);
             addCheckedId(id);
+        }
 
         // If this group has dividers, request a redraw
         if (hasDivider())
@@ -242,8 +268,11 @@ public class ToggleGroup extends LinearLayout
     }
 
     private void removeAllChecked() {
+        pauseListener();
+        for (int id : mCheckedIds)
+            setCheckedStateForView(id, false);
         mCheckedIds.clear();
-        fireCheckedChanged();
+        resumeAndFireListener();
     }
 
     private void removeCheckedId(@IdRes int id) {
