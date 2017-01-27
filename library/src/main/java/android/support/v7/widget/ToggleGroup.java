@@ -250,10 +250,14 @@ public class ToggleGroup extends LinearLayout
 
     private void checkExclusive(@IdRes int id) {
         if (id != -1 && (id == mCheckedId)) {
-            if(!mAllowUnselected)   //If we don't allow unselected, block unchecking
+            // If we don't allow unselected, block unchecking
+            if(!mAllowUnselected)
                 setCheckedStateForView(mCheckedId, true);
-            else
-                return;
+            else {
+                // We're deselecting, so set no id and let listener fire in addChecked
+                // if (mCheckedId != -1) will handle unchecking
+                id = NO_ID;
+            }
         }
 
         if (mCheckedId != -1) {
@@ -293,7 +297,10 @@ public class ToggleGroup extends LinearLayout
 
     private void addCheckedId(@IdRes int id) {
         mCheckedId = id;
-        mCheckedIds.add(id);
+        if (mCheckedId == NO_ID)
+            mCheckedIds.clear();
+        else
+            mCheckedIds.add(id);
         fireCheckedChanged();
     }
 
@@ -355,7 +362,9 @@ public class ToggleGroup extends LinearLayout
      * @see #getCheckedId()
      */
     public void clearChecked() {
+        pauseListener();
         check(View.NO_ID);
+        resumeListener();
     }
 
     /**
