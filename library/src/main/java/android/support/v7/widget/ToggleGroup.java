@@ -120,6 +120,36 @@ public class ToggleGroup extends LinearLayout
     }
 
     /**
+     * When true the group will allow up to a single selection, deselecting existing ones when a new one is selected.
+     * @param exclusive true if only one selection is valid.
+     */
+    public void setExclusive(boolean exclusive) {
+        mExclusive = exclusive;
+    }
+
+    /**
+     * see {@link #setExclusive(boolean)}
+     */
+    public boolean isExclusive() {
+        return mExclusive;
+    }
+
+    /**
+     * When true the group will allow no selection, otherwise "deselecting" a single selection will do nothing.
+     * @param allowUnselected true if no selection is allowed.
+     */
+    public void setAllowUnselected(boolean allowUnselected) {
+        mAllowUnselected = allowUnselected;
+    }
+
+    /**
+     * see {@link #setAllowUnselected(boolean)}
+     */
+    public boolean isUnselectedAllowed() {
+        return mAllowUnselected;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
