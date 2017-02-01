@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 ext {
     versionMajor = 1
@@ -38,14 +38,14 @@ dependencies {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-publish {
-    groupId = 'com.anthonymandra'
-    artifactId = 'ToggleButtons'
-    licences = ['MIT']
-    publishVersion = libraryVersion
-    desc = 'Android toggle buttons that adhere to the Material Design documentation.'
-    website = 'https://github.com/rcketscientist/ToggleButtons'
-    dryRun = false;
-    bintrayUser = properties.getProperty('bintray.user')
-    bintrayKey = properties.getProperty('bintray.apiKey')
-}
+//publish {
+//    groupId = 'com.anthonymandra'
+//    artifactId = 'ToggleButtons'
+//    licences = ['MIT']
+//    publishVersion = libraryVersion
+//    desc = 'Android toggle buttons that adhere to the Material Design documentation.'
+//    website = 'https://github.com/rcketscientist/ToggleButtons'
+//    dryRun = false;
+//    bintrayUser = properties.getProperty('bintray.user')
+//    bintrayKey = properties.getProperty('bintray.apiKey')
+//}

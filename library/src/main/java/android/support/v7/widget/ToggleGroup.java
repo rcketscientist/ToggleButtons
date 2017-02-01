@@ -252,13 +252,13 @@ public class ToggleGroup extends LinearLayout
         if (id != -1 && (id == mCheckedId)) {
             // If we don't allow unselected, block unchecking
             if(!mAllowUnselected)
-                setCheckedStateForView(mCheckedId, true);
+                setCheckedStateForView(mCheckedId, true);   //TODO: just return here?
             else {
                 // We're deselecting, so set no id and let listener fire in addChecked
                 // if (mCheckedId != -1) will handle unchecking
                 id = NO_ID;
             }
-        }
+        }   //TODO: When !mAllowUnselected the following is true and we just unset it anyway, prolly return!
 
         if (mCheckedId != -1) {
             setCheckedStateForView(mCheckedId, false);
@@ -362,9 +362,7 @@ public class ToggleGroup extends LinearLayout
      * @see #getCheckedId()
      */
     public void clearChecked() {
-        pauseListener();
         check(View.NO_ID);
-        resumeListener();
     }
 
     /**
