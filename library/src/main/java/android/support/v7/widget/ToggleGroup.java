@@ -19,6 +19,7 @@ import com.anthonymandra.widget.R;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ToggleGroup extends LinearLayout
 {
     private static final int[] COLOR_BACKGROUND_ATTR = {android.R.attr.colorBackground};
@@ -82,12 +83,13 @@ public class ToggleGroup extends LinearLayout
             // If the theme colorBackground is light, use our own light color, otherwise dark
             final float[] hsv = new float[3];
             Color.colorToHSV(themeColorBackground, hsv);
+            //noinspection deprecation
             backgroundColor = ColorStateList.valueOf(hsv[2] > 0.5f
                     ? getResources().getColor(android.support.v7.cardview.R.color.cardview_light_background)
                     : getResources().getColor(android.support.v7.cardview.R.color.cardview_dark_background));
         }
         final RoundRectDrawable background = new RoundRectDrawable(backgroundColor, cornerRadius);
-        setBackgroundDrawable(background);
+        setBackground(background);
         setClipToOutline(true);
 
         int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
@@ -124,10 +126,11 @@ public class ToggleGroup extends LinearLayout
         mExclusive = exclusive;
     }
 
-    /**
-     * see {@link #setExclusive(boolean)}
-     */
-    public boolean isExclusive() {
+	/**
+	 * see {@link #setExclusive(boolean)}
+	 * @return true if this group allows a single selection
+	 */
+	public boolean isExclusive() {
         return mExclusive;
     }
 
@@ -139,10 +142,11 @@ public class ToggleGroup extends LinearLayout
         mAllowUnselected = allowUnselected;
     }
 
-    /**
-     * see {@link #setAllowUnselected(boolean)}
-     */
-    public boolean isUnselectedAllowed() {
+	/**
+	 * see {@link #setAllowUnselected(boolean)}
+	 * @return true if this group allows no selection
+	 */
+	public boolean isUnselectedAllowed() {
         return mAllowUnselected;
     }
 
@@ -158,28 +162,6 @@ public class ToggleGroup extends LinearLayout
     public void setOnHierarchyChangeListener(OnHierarchyChangeListener listener) {
         // the user listener is delegated to our pass-through listener
         mPassThroughListener.mOnHierarchyChangeListener = listener;
-    }
-
-    /**
-     * Pauses the listener in the case of multiple updates
-     */
-    protected void pauseListener() {
-        mProtectFromCheckedChange = true;
-    }
-
-    /**
-     * Resumes the listener.  Does not fire listener.
-     */
-    protected void resumeListener() {
-        mProtectFromCheckedChange = false;
-    }
-
-    /**
-     * Resumes and fires the listener
-     */
-    protected void resumeAndFireListener() {
-        mProtectFromCheckedChange = false;
-        fireCheckedChanged();
     }
 
     /**
@@ -274,11 +256,12 @@ public class ToggleGroup extends LinearLayout
     }
 
     private void removeAllChecked() {
-        pauseListener();
+	    mProtectFromCheckedChange = true;
         for (int id : mCheckedIds)
             setCheckedStateForView(id, false);
         mCheckedIds.clear();
-        resumeAndFireListener();
+	    mProtectFromCheckedChange = false;
+	    fireCheckedChanged();
     }
 
     private void removeCheckedId(@IdRes int id) {
@@ -486,7 +469,7 @@ public class ToggleGroup extends LinearLayout
          * @param group the group in which the checked radio button has changed
          * @param checkedId the unique identifier of the newly checked radio button
          */
-        public void onCheckedChanged(ToggleGroup group, @IdRes int[] checkedId);
+        void onCheckedChanged(ToggleGroup group, @IdRes int[] checkedId);
     }
 
     private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {

@@ -1,5 +1,6 @@
 package android.support.v7.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -20,9 +21,10 @@ import com.anthonymandra.widget.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+@SuppressWarnings("unused")
 public class ToggleButton extends CompoundButton implements TintableCompoundButton {
 
-	private AppCompatCompoundButtonHelper mCompoundButtonHelper;
+	private final AppCompatCompoundButtonHelper mCompoundButtonHelper;
 	private CharSequence mTextOn;
 	private CharSequence mTextOff;
 
@@ -36,6 +38,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 
 	}
 
+	@SuppressLint("RestrictedApi")
 	public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(TintContextWrapper.wrap(context), attrs, defStyleAttr);
 		mCompoundButtonHelper = new AppCompatCompoundButtonHelper(this);
@@ -131,6 +134,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 	 *
 	 * @return The text.
 	 */
+	@SuppressWarnings("WeakerAccess")
 	public CharSequence getTextOn() {
 		return mTextOn;
 	}
@@ -149,6 +153,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 	 *
 	 * @return The text.
 	 */
+	@SuppressWarnings("WeakerAccess")
 	public CharSequence getTextOff() {
 		return mTextOff;
 	}

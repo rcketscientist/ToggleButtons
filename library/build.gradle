@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
 
 ext {
     versionMajor = 1
-    versionMinor = 0
+    versionMinor = 1
     versionPatch = 0
 
     libraryCode = versionMajor * 1000000 + versionMinor * 1000 + versionPatch
@@ -31,21 +30,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:cardview-v7:25.1.1'
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-//publish {
-//    groupId = 'com.anthonymandra'
-//    artifactId = 'ToggleButtons'
-//    licences = ['MIT']
-//    publishVersion = libraryVersion
-//    desc = 'Android toggle buttons that adhere to the Material Design documentation.'
-//    website = 'https://github.com/rcketscientist/ToggleButtons'
-//    dryRun = false;
-//    bintrayUser = properties.getProperty('bintray.user')
-//    bintrayKey = properties.getProperty('bintray.apiKey')
-//}
+apply from: 'bintray.gradle'
