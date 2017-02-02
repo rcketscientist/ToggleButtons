@@ -19,15 +19,13 @@ import com.anthonymandra.widget.R;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ToggleGroup extends LinearLayout
 {
     private static final int[] COLOR_BACKGROUND_ATTR = {android.R.attr.colorBackground};
 
-    // holds the checked id in the case of exclusive mode; the selection is empty by default
-    private int mCheckedId = View.NO_ID;
-
     // holds all checked values in the case of nonexclusive mode; the selection is empty by default
-    private List<Integer> mCheckedIds = new ArrayList<>();
+    private final List<Integer> mCheckedIds = new ArrayList<>();
 
     private boolean mExclusive;
     private boolean mAllowUnselected;
@@ -85,17 +83,18 @@ public class ToggleGroup extends LinearLayout
             // If the theme colorBackground is light, use our own light color, otherwise dark
             final float[] hsv = new float[3];
             Color.colorToHSV(themeColorBackground, hsv);
+            //noinspection deprecation
             backgroundColor = ColorStateList.valueOf(hsv[2] > 0.5f
                     ? getResources().getColor(android.support.v7.cardview.R.color.cardview_light_background)
                     : getResources().getColor(android.support.v7.cardview.R.color.cardview_dark_background));
         }
         final RoundRectDrawable background = new RoundRectDrawable(backgroundColor, cornerRadius);
-        setBackgroundDrawable(background);
+        setBackground(background);
         setClipToOutline(true);
 
         int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
-        if (value != View.NO_ID) {
-            mCheckedId = value; // We set this even if not exclusive to help with designer
+        if (value != NO_ID) {
+            addCheckedId(value); // We set this even if not exclusive to help with designer
 
             if (mExclusive)
                 mCheckedIds.add(value);
@@ -127,10 +126,11 @@ public class ToggleGroup extends LinearLayout
         mExclusive = exclusive;
     }
 
-    /**
-     * see {@link #setExclusive(boolean)}
-     */
-    public boolean isExclusive() {
+	/**
+	 * see {@link #setExclusive(boolean)}
+	 * @return true if this group allows a single selection
+	 */
+	public boolean isExclusive() {
         return mExclusive;
     }
 
@@ -142,11 +142,17 @@ public class ToggleGroup extends LinearLayout
         mAllowUnselected = allowUnselected;
     }
 
-    /**
-     * see {@link #setAllowUnselected(boolean)}
-     */
-    public boolean isUnselectedAllowed() {
+	/**
+	 * see {@link #setAllowUnselected(boolean)}
+	 * @return true if this group allows no selection
+	 */
+	public boolean isUnselectedAllowed() {
         return mAllowUnselected;
+    }
+
+    private int getExclusiveCheckedId()
+    {
+	    return mCheckedIds.size() > 0 ? mCheckedIds.get(0) : NO_ID;
     }
 
     /**
@@ -159,28 +165,6 @@ public class ToggleGroup extends LinearLayout
     }
 
     /**
-     * Pauses the listener in the case of multiple updates
-     */
-    protected void pauseListener() {
-        mProtectFromCheckedChange = true;
-    }
-
-    /**
-     * Resumes the listener.  Does not fire listener.
-     */
-    protected void resumeListener() {
-        mProtectFromCheckedChange = false;
-    }
-
-    /**
-     * Resumes and fires the listener
-     */
-    protected void resumeAndFireListener() {
-        mProtectFromCheckedChange = false;
-        fireCheckedChanged();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -188,11 +172,12 @@ public class ToggleGroup extends LinearLayout
         super.onFinishInflate();
 
         // checks the appropriate radio button as requested in the XML file
-        if (mCheckedId != View.NO_ID) {
+		int initialCheck = getExclusiveCheckedId();
+        if (initialCheck != View.NO_ID) {
             mProtectFromCheckedChange = true;
-            setCheckedStateForView(mCheckedId, true);
+            setCheckedStateForView(initialCheck, true);
             mProtectFromCheckedChange = false;
-            addCheckedId(mCheckedId);
+            addCheckedId(initialCheck);
         }
     }
 
@@ -202,8 +187,9 @@ public class ToggleGroup extends LinearLayout
             final CompoundButton button = (CompoundButton) child;
             if (button.isChecked()) {
                 mProtectFromCheckedChange = true;
-                if (mExclusive && mCheckedId != View.NO_ID) {
-                    setCheckedStateForView(mCheckedId, false);
+	            int currentCheck = getExclusiveCheckedId();
+                if (mExclusive && currentCheck != View.NO_ID) {
+                    setCheckedStateForView(currentCheck, false);
                 }
                 mProtectFromCheckedChange = false;
                 addCheckedId(button.getId());
@@ -232,7 +218,7 @@ public class ToggleGroup extends LinearLayout
 
     private void checkMulti(@IdRes int id)
     {
-        if (id == -1)
+        if (id == NO_ID)
             removeAllChecked();
         else if (mCheckedIds.contains(id)) {
             setCheckedStateForView(id, false);
@@ -249,34 +235,33 @@ public class ToggleGroup extends LinearLayout
     }
 
     private void checkExclusive(@IdRes int id) {
-        if (id != -1 && (id == mCheckedId)) {
-            // If we don't allow unselected, block unchecking
-            if(!mAllowUnselected)
-                setCheckedStateForView(mCheckedId, true);
-            else {
-                // We're deselecting, so set no id and let listener fire in addChecked
-                // if (mCheckedId != -1) will handle unchecking
-                id = NO_ID;
+	    int currentCheck = getExclusiveCheckedId();
+	    // If no id, then clear
+	    if (id == NO_ID) {
+		    removeAllChecked();
+	    }
+	    else if (id == currentCheck) {      // If we've been sent an already checked item
+            if(mAllowUnselected) {          // If we don't allow unselected we simply do nothing in this method.
+	            setCheckedStateForView(id, false);
+	            removeCheckedId(id);
             }
         }
-
-        if (mCheckedId != -1) {
-            setCheckedStateForView(mCheckedId, false);
-        }
-
-        if (id != -1) {
-            setCheckedStateForView(id, true);
-        }
-
-        addCheckedId(id);
+        else {                              // Unchecked item selected
+		    if (currentCheck != NO_ID) {    // Uncheck existing selection
+			    setCheckedStateForView(currentCheck, false);
+		    }
+		    setCheckedStateForView(id, true);
+		    addCheckedId(id);
+	    }
     }
 
     private void removeAllChecked() {
-        pauseListener();
+	    mProtectFromCheckedChange = true;
         for (int id : mCheckedIds)
             setCheckedStateForView(id, false);
         mCheckedIds.clear();
-        resumeAndFireListener();
+	    mProtectFromCheckedChange = false;
+	    fireCheckedChanged();
     }
 
     private void removeCheckedId(@IdRes int id) {
@@ -296,11 +281,15 @@ public class ToggleGroup extends LinearLayout
     }
 
     private void addCheckedId(@IdRes int id) {
-        mCheckedId = id;
-        if (mCheckedId == NO_ID)
+        if (id == NO_ID)
             mCheckedIds.clear();
         else
-            mCheckedIds.add(id);
+        {
+	        if (mExclusive)
+	        	mCheckedIds.clear();    // keep the checked list clean since listeners send the whole list
+	        mCheckedIds.add(id);
+        }
+
         fireCheckedChanged();
     }
 
@@ -315,19 +304,16 @@ public class ToggleGroup extends LinearLayout
      * <p>Returns the identifier of the selected radio button in this group.
      * Upon empty selection, the returned value is -1.
      *
-     * Note: This throws an error when the group is <b>NOT</b> <i>exclusive</i>.  In a multi-select group
-     * a single checked id is undefined.</p>
+     * Note: If this group is NOT exclusive this will return the first checked id,
+     * there may be multiple checked ids!
      *
      * @return the unique id of the selected radio button in this group
      *
      * @see #check(int)
-     * @see #clearChecked()
      */
     @IdRes
     public int getCheckedId() {
-        if (!mExclusive)
-            throw new UnsupportedOperationException("This method only returns a value in exclusive mode.");
-        return mCheckedId;
+        return getExclusiveCheckedId();
     }
 
     /**
@@ -362,9 +348,7 @@ public class ToggleGroup extends LinearLayout
      * @see #getCheckedId()
      */
     public void clearChecked() {
-        pauseListener();
         check(View.NO_ID);
-        resumeListener();
     }
 
     /**
@@ -485,7 +469,7 @@ public class ToggleGroup extends LinearLayout
          * @param group the group in which the checked radio button has changed
          * @param checkedId the unique identifier of the newly checked radio button
          */
-        public void onCheckedChanged(ToggleGroup group, @IdRes int[] checkedId);
+        void onCheckedChanged(ToggleGroup group, @IdRes int[] checkedId);
     }
 
     private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
@@ -495,9 +479,33 @@ public class ToggleGroup extends LinearLayout
                 return;
             }
 
-            mProtectFromCheckedChange = true;
-            check(buttonView.getId());
-            mProtectFromCheckedChange = false;
+	        mProtectFromCheckedChange = true;
+	        int id = buttonView.getId();
+	        int currentCheck = getExclusiveCheckedId();
+
+	        // If this item was already checked by itself (implies !isChecked)
+	        if (mCheckedIds.size() == 1
+		            && mCheckedIds.contains(id)
+			        && !mAllowUnselected) {         // If we don't allow unselected
+		        setCheckedStateForView(id, true);   // then we need to undo the auto-toggle
+	        }
+	        else {
+		        // If checked in exclusive mode we need to uncheck the prior selection (implies isChecked)
+		        if (mExclusive && isChecked)
+		        {
+			        if (currentCheck != NO_ID)
+			        {
+				        setCheckedStateForView(currentCheck, false);    // Uncheck existing selection
+				        mCheckedIds.remove((Integer) id);    // wait for add to fire listener once
+			        }
+		        }
+
+		        if (isChecked)
+			        addCheckedId(id);
+		        else
+			        removeCheckedId(id);
+	        }
+	        mProtectFromCheckedChange = false;
         }
     }
 

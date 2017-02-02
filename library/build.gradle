@@ -1,5 +1,14 @@
 apply plugin: 'com.android.library'
 
+ext {
+    versionMajor = 1
+    versionMinor = 1
+    versionPatch = 0
+
+    libraryCode = versionMajor * 1000000 + versionMinor * 1000 + versionPatch
+    libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -7,12 +16,22 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+
+        versionCode libraryCode
+        versionName libraryVersion
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:cardview-v7:25.1.0'
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
 }
+
+apply from: 'bintray.gradle'
