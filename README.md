@@ -1,3 +1,6 @@
+ [ ![Download](https://api.bintray.com/packages/rcketscientist/maven/ToggleButtons/images/download.svg) ](https://bintray.com/rcketscientist/maven/ToggleButtons/_latestVersion)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 #ToggleButtons
 
 This library adds two custom widgets that adhere to the Material Design definition for toggle buttons.  
