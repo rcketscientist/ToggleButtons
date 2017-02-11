@@ -1,14 +1,5 @@
 apply plugin: 'com.novoda.bintray-release'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.4.0'
-    }
-}
-
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
