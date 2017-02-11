@@ -33,9 +33,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 	}
 
 	public ToggleButton(Context context, AttributeSet attrs) {
-//		this(context, attrs, R.style.Widget_Material_ToggleButton); // The designer theme errors are annoying as hell
-		this(context, attrs, 0);
-
+		this(context, attrs, R.attr.toggleButtonStyle);
 	}
 
 	@SuppressLint("RestrictedApi")

@@ -47,8 +47,7 @@ public class ToggleGroup extends LinearLayout
     }
 
     public ToggleGroup(Context context, AttributeSet attrs) {
-//        this(context, attrs, R.attr.toggleGroupStyle); // The designer theme errors are annoying as hell
-        this(context, attrs, 0);
+        this(context, attrs, R.attr.toggleGroupStyle); // The designer theme errors are annoying as hell
     }
 
     public ToggleGroup(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -506,6 +505,9 @@ public class ToggleGroup extends LinearLayout
 			        removeCheckedId(id);
 	        }
 	        mProtectFromCheckedChange = false;
+
+            if (hasDivider())
+                requestLayout();
         }
     }
 
