@@ -10,8 +10,12 @@
 		<item name="toggleButtonStyle">@style/Widget.Material.ToggleButton</item>
 	</style>
 
-	<style name="ContrastToggle" parent="Widget.Material.ToggleButton">
-		<item name="android:background">@drawable/contrast_background</item>
+	<style name="PinkToggle" parent="Widget.Material.ToggleButton">
+		<item name="android:background">@drawable/selector_pink_on_white</item>
+	</style>
+
+	<style name="BlueToggle" parent="Widget.Material.ToggleButton">
+		<item name="android:background">@drawable/selector_pink_on_white</item>
 	</style>
 
 </resources>

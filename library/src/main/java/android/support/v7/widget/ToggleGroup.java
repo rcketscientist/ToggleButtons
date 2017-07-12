@@ -5,7 +5,9 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -20,9 +22,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ToggleGroup extends LinearLayout
+public class ToggleGroup extends LinearLayoutCompat
 {
     private static final int[] COLOR_BACKGROUND_ATTR = {android.R.attr.colorBackground};
+    private static final ToggleGroupImpl IMPL;
+
+    static {
+        if (Build.VERSION.SDK_INT >= 21) {
+            IMPL = new ToggleGroupApi21();
+        } else if (Build.VERSION.SDK_INT >= 17) {
+            IMPL = new ToggleGroupApi17();
+        } else {
+            IMPL = new ToggleGroupApi9();
+        }
+        IMPL.initStatic();
+    }
+
+    private boolean mCompatPadding;
+
+    private boolean mPreventCornerOverlap;
+
+    /**
+     * ToggleGroup requires to have a particular minimum size to draw shadows before API 21. If
+     * developer also sets min width/height, they might be overridden.
+     *
+     * CardView works around this issue by recording user given parameters and using an internal
+     * method to set them.
+     */
+    int mUserSetMinWidth, mUserSetMinHeight;
+
+    final Rect mContentPadding = new Rect();
+
+    final Rect mShadowBounds = new Rect();
 
     // holds all checked values in the case of nonexclusive mode; the selection is empty by default
     private final List<Integer> mCheckedIds = new ArrayList<>();
@@ -65,8 +96,10 @@ public class ToggleGroup extends LinearLayout
 
         final float cornerRadius = attributes.getDimension(R.styleable.ToggleGroup_cornerRadius, 0);
         final float elevation = attributes.getDimension(R.styleable.ToggleGroup_toggleElevation, 0);
+        final float maxElevation = attributes.getDimension(R.styleable.ToggleGroup_toggleMaxElevation, 0);
 
-        setElevation(elevation);
+        mCompatPadding = attributes.getBoolean(R.styleable.ToggleGroup_toggleUseCompatPadding, false);
+        mPreventCornerOverlap = attributes.getBoolean(R.styleable.ToggleGroup_togglePreventCornerOverlap, true);
 
         // This creates a background which is important for both elevation shadow and rounded corner clipping
         // TODO: Copying CardView atm because we know it creates the rounded corners.  We could likely simplify this.
@@ -87,9 +120,6 @@ public class ToggleGroup extends LinearLayout
                     ? getResources().getColor(android.support.v7.cardview.R.color.cardview_light_background)
                     : getResources().getColor(android.support.v7.cardview.R.color.cardview_dark_background));
         }
-        final RoundRectDrawable background = new RoundRectDrawable(backgroundColor, cornerRadius);
-        setBackground(background);
-        setClipToOutline(true);
 
         int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
         if (value != NO_ID) {
@@ -101,6 +131,9 @@ public class ToggleGroup extends LinearLayout
 
         attributes.recycle();
         init();
+
+        IMPL.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius,
+                elevation, elevation);
     }
 
     private void init() {
@@ -377,7 +410,7 @@ public class ToggleGroup extends LinearLayout
     }
 
     @Override
-    protected LinearLayout.LayoutParams generateDefaultLayoutParams() {
+    protected LinearLayoutCompat.LayoutParams generateDefaultLayoutParams() {
         return new ToggleGroup.LayoutParams(ToggleGroup.LayoutParams.WRAP_CONTENT, ToggleGroup.LayoutParams.WRAP_CONTENT);
     }
 
@@ -392,7 +425,7 @@ public class ToggleGroup extends LinearLayout
      * XML file. Otherwise, this class uses the value read from the XML file.</p>
      *
      */
-    public static class LayoutParams extends LinearLayout.LayoutParams {
+    public static class LayoutParams extends LinearLayoutCompat.LayoutParams {
         /**
          * {@inheritDoc}
          */
@@ -528,7 +561,10 @@ public class ToggleGroup extends LinearLayout
                 int id = child.getId();
                 // generates an id if it's missing
                 if (id == View.NO_ID) {
-                    id = View.generateViewId();
+	                if (Build.VERSION.SDK_INT < 17)
+		                id = child.hashCode();
+	                else
+	                    id = View.generateViewId();
                     child.setId(id);
                 }
                 ((CompoundButton) child).setOnCheckedChangeListener(mChildOnCheckedChangeListener);
@@ -665,4 +701,114 @@ public class ToggleGroup extends LinearLayout
         divider.draw(canvas);
     }
 
+    /**
+     * Returns whether ToggleGroup will add inner padding on platforms Lollipop and after.
+     *
+     * @return <code>true</code> if ToggleGroup adds inner padding on platforms Lollipop and after to
+     * have same dimensions with platforms before Lollipop.
+     */
+    public boolean getUseCompatPadding() {
+        return mCompatPadding;
+    }
+
+    /**
+     * ToggleGroup adds additional padding to draw shadows on platforms before Lollipop.
+     * <p>
+     * This may cause Groups to have different sizes between Lollipop and before Lollipop. If you
+     * need to align ToggleGroup with other Views, you may need api version specific dimension
+     * resources to account for the changes.
+     * As an alternative, you can set this flag to <code>true</code> and ToggleGroup will add the same
+     * padding values on platforms Lollipop and after.
+     * <p>
+     * Since setting this flag to true adds unnecessary gaps in the UI, default value is
+     * <code>false</code>.
+     *
+     * @param useCompatPadding <code>true></code> if ToggleGroup should add padding for the shadows on
+     *      platforms Lollipop and above.
+     * @attr ref android.support.v7.cardview.R.styleable#CardView_cardUseCompatPadding//TODO: update
+     */
+    public void setUseCompatPadding(boolean useCompatPadding) {
+        if (mCompatPadding != useCompatPadding) {
+            mCompatPadding = useCompatPadding;
+            IMPL.onCompatPaddingChanged(mCardViewDelegate);
+        }
+    }
+
+    /**
+     * Returns whether ToggleGroup should add extra padding to content to avoid overlaps with rounded
+     * corners on pre-Lollipop platforms.
+     *
+     * @return True if ToggleGroup prevents overlaps with rounded corners on platforms before Lollipop.
+     *         Default value is <code>true</code>.
+     */
+    public boolean getPreventCornerOverlap() {
+        return mPreventCornerOverlap;
+    }
+
+    /**
+     * On pre-Lollipop platforms, ToggleGroup does not clip its bounds for the rounded
+     * corners. Instead, it adds padding to content so that it won't overlap with the rounded
+     * corners. You can disable this behavior by setting this field to <code>false</code>.
+     * <p>
+     * Setting this value on Lollipop and above does not have any effect unless you have enabled
+     * compatibility padding.
+     *
+     * @param preventCornerOverlap Whether ToggleGroup should add extra padding to content to avoid
+     *                             overlaps with the ToggleGroup corners.
+     * @attr ref android.support.v7.cardview.R.styleable#CardView_cardPreventCornerOverlap //TODO:update
+     * @see #setUseCompatPadding(boolean)
+     */
+    public void setPreventCornerOverlap(boolean preventCornerOverlap) {
+        if (preventCornerOverlap != mPreventCornerOverlap) {
+            mPreventCornerOverlap = preventCornerOverlap;
+            IMPL.onPreventCornerOverlapChanged(mCardViewDelegate);
+        }
+    }
+
+    private final ToggleGroupDelegate mCardViewDelegate = new ToggleGroupDelegate() {
+        private Drawable mGroupBackground;
+
+        @Override
+        public void setGroupBackground(Drawable drawable) {
+            mGroupBackground = drawable;
+            setBackgroundDrawable(drawable);
+        }
+
+        @Override
+        public boolean getUseCompatPadding() {
+            return ToggleGroup.this.getUseCompatPadding();
+        }
+
+        @Override
+        public boolean getPreventCornerOverlap() {
+            return ToggleGroup.this.getPreventCornerOverlap();
+        }
+
+        @Override
+        public void setShadowPadding(int left, int top, int right, int bottom) {
+            mShadowBounds.set(left, top, right, bottom);
+            ToggleGroup.super.setPadding(left + mContentPadding.left, top + mContentPadding.top,
+                    right + mContentPadding.right, bottom + mContentPadding.bottom);
+        }
+
+        @Override
+        public void setMinWidthHeightInternal(int width, int height) {
+            if (width > mUserSetMinWidth) {
+                ToggleGroup.super.setMinimumWidth(width);
+            }
+            if (height > mUserSetMinHeight) {
+                ToggleGroup.super.setMinimumHeight(height);
+            }
+        }
+
+        @Override
+        public Drawable getGroupBackground() {
+            return mGroupBackground;
+        }
+
+        @Override
+        public View getToggleGroup() {
+            return ToggleGroup.this;
+        }
+    };
 }

@@ -12,46 +12,46 @@
 	android:paddingTop="@dimen/activity_vertical_margin"
 	android:background="@color/colorBackground"
 	tools:context="com.anthonymandra.widget.togglesample.MainActivity"
-	tools:ignore="HardcodedText">
+	tools:ignore="HardcodedText, RtlHardcoded">
 
 	<android.support.v7.widget.ToggleGroup
 		android:id="@+id/groupExclusiveV"
-		style="@style/Widget.Material.ToggleButton"
+		style="@style/Widget.Material.ToggleGroup"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:exclusive="true"
 		android:layout_below="@+id/groupExclusiveH"
-		android:layout_alignParentStart="true"
+		android:layout_alignParentLeft="true"
 		app:orientation="vertical"
 		android:layout_margin="5dp"
 		android:divider="@drawable/toggle_divider"> <!-- Should do nothing on exclusive -->
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonleftV"
-			style="@style/Widget.Material.ToggleButton"
+			style="@style/BlueToggle"
 			android:button="@drawable/ic_format_align_left_black_24px"/>
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonjustifyV"
-			style="@style/Widget.Material.ToggleButton"
+			style="@style/BlueToggle"
 			android:button="@drawable/ic_format_align_justify_black_24px"/>
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonrightV"
-			style="@style/Widget.Material.ToggleButton"
+			style="@style/BlueToggle"
 			android:button="@drawable/ic_format_align_right_black_24px"
 			android:checked="true"/>
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttoncenterV"
-			style="@style/Widget.Material.ToggleButton"
+			style="@style/BlueToggle"
 			android:button="@drawable/ic_format_align_center_black_24px"/>
 
 	</android.support.v7.widget.ToggleGroup>
 
 	<android.support.v7.widget.ToggleGroup
 		android:id="@+id/groupExclusiveH"
-		style="@style/Widget.Material.ToggleButton"
+		style="@style/Widget.Material.ToggleGroup"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:exclusive="true"
@@ -59,7 +59,7 @@
 		android:divider="@drawable/toggle_divider"
 		android:layout_margin="5dp"
 		android:layout_alignParentTop="true"
-		android:layout_alignParentStart="true">
+		android:layout_alignParentLeft="true">
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonleftH"
@@ -94,7 +94,7 @@
 		android:divider="?android:attr/dividerVertical"
 		android:layout_margin="5dp"
 		android:layout_below="@+id/groupNotExclusiveH"
-		android:layout_toEndOf="@+id/groupExclusiveV">
+		android:layout_toRightOf="@+id/groupExclusiveV">
 <!--
 		?android:attr/dividerVertical
 		@drawable/toggle_divider
@@ -102,18 +102,18 @@
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonBoldV"
-			style="@style/ContrastToggle"
+			style="@style/PinkToggle"
 			android:button="@drawable/ic_format_bold_black_24px"/>
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonItalicV"
-			style="@style/ContrastToggle"
+			style="@style/PinkToggle"
 			android:button="@drawable/ic_format_italic_black_24px"
 			android:checked="true"/>
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonUnderlineV"
-			style="@style/ContrastToggle"
+			style="@style/PinkToggle"
 			android:button="@drawable/ic_format_underlined_black_24px"
 			android:checked="true"/>
 
@@ -126,7 +126,7 @@
 		android:divider="@drawable/toggle_divider"
 		android:layout_margin="5dp"
 		android:layout_below="@+id/groupExclusiveH"
-		android:layout_toEndOf="@+id/groupExclusiveV">
+		android:layout_toRightOf="@+id/groupExclusiveV">
 
 		<android.support.v7.widget.ToggleButton
 			android:id="@+id/buttonBoldH"
@@ -155,7 +155,7 @@
 		android:layout_height="wrap_content"
 		app:exclusive="true"
 		android:layout_below="@id/groupNotExclusiveV"
-		android:layout_alignParentStart="true"
+		android:layout_alignParentLeft="true"
 		android:layout_margin="5dp"
 		android:divider="@drawable/toggle_divider"> <!-- Should do nothing on exclusive -->
 

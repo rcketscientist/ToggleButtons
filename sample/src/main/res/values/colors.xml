@@ -5,4 +5,5 @@
 	<color name="colorAccent">#FF4081</color>
 
 	<color name="colorBackground">#eeeeee</color>
+	<color name="groupContrastBackground">#5c6bc0</color>
 </resources>
