@@ -17,6 +17,7 @@
 
     <style name="Widget.Material.ToggleGroup" parent="Widget.Material">
         <item name="toggleElevation">@dimen/materialElevation</item>
+        <item name="toggleMaxElevation">@dimen/materialMaxElevation</item>
         <item name="cornerRadius">@dimen/materialCornerRadius</item>
     </style>
 

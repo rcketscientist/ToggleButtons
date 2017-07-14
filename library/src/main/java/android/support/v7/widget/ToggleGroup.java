@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
 import com.anthonymandra.widget.R;
 
@@ -46,7 +45,7 @@ public class ToggleGroup extends LinearLayoutCompat
      * ToggleGroup requires to have a particular minimum size to draw shadows before API 21. If
      * developer also sets min width/height, they might be overridden.
      *
-     * CardView works around this issue by recording user given parameters and using an internal
+     * ToggleGroup works around this issue by recording user given parameters and using an internal
      * method to set them.
      */
     int mUserSetMinWidth, mUserSetMinHeight;
@@ -102,7 +101,6 @@ public class ToggleGroup extends LinearLayoutCompat
         mPreventCornerOverlap = attributes.getBoolean(R.styleable.ToggleGroup_togglePreventCornerOverlap, true);
 
         // This creates a background which is important for both elevation shadow and rounded corner clipping
-        // TODO: Copying CardView atm because we know it creates the rounded corners.  We could likely simplify this.
         ColorStateList backgroundColor;
         if (attributes.hasValue(R.styleable.ToggleGroup_backgroundColor)) {
             backgroundColor = attributes.getColorStateList(R.styleable.ToggleGroup_backgroundColor);
@@ -117,8 +115,8 @@ public class ToggleGroup extends LinearLayoutCompat
             Color.colorToHSV(themeColorBackground, hsv);
             //noinspection deprecation
             backgroundColor = ColorStateList.valueOf(hsv[2] > 0.5f
-                    ? getResources().getColor(android.support.v7.cardview.R.color.cardview_light_background)
-                    : getResources().getColor(android.support.v7.cardview.R.color.cardview_dark_background));
+                    ? getResources().getColor(R.color.toggleGroup_light_background)
+                    : getResources().getColor(R.color.toggleGroup_dark_background));
         }
 
         int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
@@ -132,22 +130,14 @@ public class ToggleGroup extends LinearLayoutCompat
         attributes.recycle();
         init();
 
-        IMPL.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius,
-                elevation, elevation);
+        IMPL.initialize(mToggleGroupDelegate, context, backgroundColor, cornerRadius,
+                elevation, maxElevation);
     }
 
     private void init() {
         mChildOnCheckedChangeListener = new CheckedStateTracker();
         mPassThroughListener = new PassThroughHierarchyChangeListener();
         super.setOnHierarchyChangeListener(mPassThroughListener);
-
-//        // This allows the (possibly) transparent ViewGroup to cast shadow.
-//        setOutlineProvider(new ViewOutlineProvider() {
-//            @Override
-//            public void getOutline(View view, Outline outline) {
-//                outline.setRect(0, 0, view.getWidth(), view.getHeight());
-//            }
-//        });
     }
 
     /**
@@ -664,7 +654,7 @@ public class ToggleGroup extends LinearLayoutCompat
         for (int i = 0; i < count; i++) {
             final CompoundButton child = (CompoundButton) getChildAt(i);
             if (hasDividerBeforeChildAt(i)) {
-                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                final LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) child.getLayoutParams();
                 final int top = child.getTop() - lp.topMargin - mDividerHeight;
                 drawHorizontalDivider(canvas, top);
             }
@@ -676,7 +666,7 @@ public class ToggleGroup extends LinearLayoutCompat
         for (int i = 0; i < count; i++) {
             final CompoundButton child = (CompoundButton) getChildAt(i);
             if (hasDividerBeforeChildAt(i)) {
-                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                final LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) child.getLayoutParams();
                 final int left = child.getLeft() - lp.leftMargin - mDividerWidth;
                 drawVerticalDivider(canvas, left);
             }
@@ -725,12 +715,11 @@ public class ToggleGroup extends LinearLayoutCompat
      *
      * @param useCompatPadding <code>true></code> if ToggleGroup should add padding for the shadows on
      *      platforms Lollipop and above.
-     * @attr ref android.support.v7.cardview.R.styleable#CardView_cardUseCompatPadding//TODO: update
      */
     public void setUseCompatPadding(boolean useCompatPadding) {
         if (mCompatPadding != useCompatPadding) {
             mCompatPadding = useCompatPadding;
-            IMPL.onCompatPaddingChanged(mCardViewDelegate);
+            IMPL.onCompatPaddingChanged(mToggleGroupDelegate);
         }
     }
 
@@ -755,22 +744,22 @@ public class ToggleGroup extends LinearLayoutCompat
      *
      * @param preventCornerOverlap Whether ToggleGroup should add extra padding to content to avoid
      *                             overlaps with the ToggleGroup corners.
-     * @attr ref android.support.v7.cardview.R.styleable#CardView_cardPreventCornerOverlap //TODO:update
      * @see #setUseCompatPadding(boolean)
      */
     public void setPreventCornerOverlap(boolean preventCornerOverlap) {
         if (preventCornerOverlap != mPreventCornerOverlap) {
             mPreventCornerOverlap = preventCornerOverlap;
-            IMPL.onPreventCornerOverlapChanged(mCardViewDelegate);
+            IMPL.onPreventCornerOverlapChanged(mToggleGroupDelegate);
         }
     }
 
-    private final ToggleGroupDelegate mCardViewDelegate = new ToggleGroupDelegate() {
+    private final ToggleGroupDelegate mToggleGroupDelegate = new ToggleGroupDelegate() {
         private Drawable mGroupBackground;
 
         @Override
         public void setGroupBackground(Drawable drawable) {
             mGroupBackground = drawable;
+            //noinspection deprecation
             setBackgroundDrawable(drawable);
         }
 

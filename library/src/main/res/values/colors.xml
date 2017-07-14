@@ -16,5 +16,11 @@
 
     <!-- This is the color of the divider in the guideline, however it's likely achieved via tint not specific color-->
     <color name="dividerColorDark">#a8a8a8</color>
+    <color name="dividerColorLight">#dcdcdc</color>
+
+    <!-- Background color for light toggleGroup. -->
+    <color name="toggleGroup_light_background">#FFFAFAFA</color>
+    <!-- Background color for dark toggleGroup. -->
+    <color name="toggleGroup_dark_background">#FF202020</color>
 
 </resources>

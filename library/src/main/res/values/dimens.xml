@@ -3,6 +3,7 @@
 	<dimen name="defImageToggleSize">48dp</dimen>
 
 	<dimen name="materialElevation">2dp</dimen>
+	<dimen name="materialMaxElevation">2dp</dimen>
 	<dimen name="materialCornerRadius">2dp</dimen>
 
 	<dimen name="flatElevation">0dp</dimen>
