@@ -1,3 +1,12 @@
 <resources>
-	<string name="app_name">My Application</string>
+	<string name="app_name">Toggle Button Sample</string>
+	<string name="formatExample">Format Example</string>
+    <string name="textAlignmentExample">Alignment Example</string>
+    <string name="options">Options</string>
+    <string name="horizontal">H</string>
+    <string name="vertical">V</string>
+    <string name="exclusive">Exclusive</string>
+    <string name="on">True</string>
+    <string name="off">False</string>
+    <string name="exclusiveDefinition">Exclusive allows only a single selection in the group.  This would be ideal in the text alignment group above where only a single alignment is applicable at any time.  When false the group allows multiple selections which is applicable in the text format group where you might select both \'italic\' and \'underline\'.</string>
 </resources>

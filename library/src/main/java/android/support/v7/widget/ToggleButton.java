@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -100,7 +101,7 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 				buttonDrawable.setBounds(left, top, right, bottom);
 
 				final Drawable background = getBackground();
-				if (background != null) {
+				if (Build.VERSION.SDK_INT > 21 && background != null) {
 					background.setHotspotBounds(left, top, right, bottom);
 				}
 
