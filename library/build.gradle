@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionMajor = 2
+    versionMajor = 3
     versionMinor = 0
     versionPatch = 0
 
@@ -10,12 +10,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 26
 
         versionCode libraryCode
         versionName libraryVersion
@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
 }
 
 gradle.startParameter.taskNames.each { task ->
