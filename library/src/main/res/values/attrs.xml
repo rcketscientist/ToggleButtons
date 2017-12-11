@@ -44,6 +44,8 @@
         <attr name="textOn" format="string" />
         <!-- The text for the button when it is not checked. -->
         <attr name="textOff" format="string" />
+
+        <attr name="buttonCompat" format="reference" />
     </declare-styleable>
 
     <attr name="toggleGroupStyle" format="reference"/>

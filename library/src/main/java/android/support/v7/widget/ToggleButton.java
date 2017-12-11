@@ -46,6 +46,12 @@ public class ToggleButton extends CompoundButton implements TintableCompoundButt
 		final TypedArray a = context.obtainStyledAttributes(
 				attrs, R.styleable.ToggleButton, defStyleAttr, R.style.Widget_Material_ToggleButton);
 
+		int resId = a.getResourceId(R.styleable.ToggleButton_buttonCompat, 0);
+		if (resId != 0) {
+			Drawable drawable = AppCompatResources.getDrawable(getContext(), resId);
+			setButtonDrawable(drawable);
+		}
+
 		mTextOn = a.getText(R.styleable.ToggleButton_textOn);
 		mTextOff = a.getText(R.styleable.ToggleButton_textOff);
 
