@@ -1,10 +1,11 @@
-package android.support.v7.widget;
+package androidx.appcompat.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * Interface for platform specific ToggleGroup implementations.

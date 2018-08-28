@@ -1,4 +1,4 @@
-package android.support.v7.widget;
+package androidx.appcompat.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,12 @@ import com.anthonymandra.widget.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.ToggleGroupApi17;
+import androidx.cardview.widget.ToggleGroupApi21;
+import androidx.cardview.widget.ToggleGroupApi9;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ToggleGroup extends LinearLayoutCompat
@@ -317,7 +321,7 @@ public class ToggleGroup extends LinearLayoutCompat
 
     private void setCheckedStateForView(int viewId, boolean checked) {
         View checkedView = findViewById(viewId);
-        if (checkedView != null && checkedView instanceof CompoundButton) {
+        if (checkedView instanceof CompoundButton) {
             ((CompoundButton) checkedView).setChecked(checked);
         }
     }

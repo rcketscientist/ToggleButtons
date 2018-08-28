@@ -1,4 +1,4 @@
-package android.support.v7.widget;
+package androidx.cardview.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,14 +7,17 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.ToggleGroupDelegate;
+import androidx.appcompat.widget.ToggleGroupImpl;
 
 @RequiresApi(9)
 @TargetApi(9)
 public class ToggleGroupApi9 implements ToggleGroupImpl
 {
-	final RectF sCornerRect = new RectF();
+	private final RectF sCornerRect = new RectF();
 
 	@Override
 	public void initStatic() {
@@ -66,7 +69,7 @@ public class ToggleGroupApi9 implements ToggleGroupImpl
 
 	@Override
 	public void initialize(ToggleGroupDelegate groupView, Context context,
-	                       ColorStateList backgroundColor, float radius, float elevation, float maxElevation) {
+						   ColorStateList backgroundColor, float radius, float elevation, float maxElevation) {
 		RoundRectDrawableWithShadow background = createBackground(context, backgroundColor, radius,
 				elevation, maxElevation);
 		background.setAddPaddingForCorners(groupView.getPreventCornerOverlap());
