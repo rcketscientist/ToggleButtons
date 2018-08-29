@@ -1,10 +1,11 @@
 package com.anthonymandra.widget.togglesample;
 
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.ToggleGroup;
+
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.ToggleGroup;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -15,8 +16,8 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final ToggleGroup alignment = (ToggleGroup) findViewById(R.id.groupTextAlignment);
-		final ToggleGroup format = (ToggleGroup) findViewById(R.id.groupTextFormat);
+		final ToggleGroup alignment = findViewById(R.id.groupTextAlignment);
+		final ToggleGroup format = findViewById(R.id.groupTextFormat);
 
 		((ToggleGroup)findViewById(R.id.groupOrientation)).setOnCheckedChangeListener(new ToggleGroup.OnCheckedChangeListener() {
 			@Override

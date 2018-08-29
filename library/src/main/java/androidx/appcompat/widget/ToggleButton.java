@@ -1,4 +1,4 @@
-package android.support.v7.widget;
+package androidx.appcompat.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,19 +8,20 @@ import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.widget.CompoundButtonCompat;
-import android.support.v4.widget.TintableCompoundButton;
-import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.CompoundButton;
 
 import com.anthonymandra.widget.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.core.widget.TintableCompoundButton;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 @SuppressWarnings("unused")
 public class ToggleButton extends CompoundButton implements TintableCompoundButton {

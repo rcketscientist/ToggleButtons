@@ -1,16 +1,78 @@
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-publish {
-    groupId =           'com.anthonymandra'
-    artifactId =        'ToggleButtons'
-    licences =          ['MIT']
-    publishVersion =    libraryVersion
-    desc =              'Android toggle buttons that adhere to the Material Design documentation.'
-    website =           'https://github.com/rcketscientist/ToggleButtons'
-    dryRun =            false;
-    bintrayUser =       properties.getProperty('bintray.user')
-    bintrayKey =        properties.getProperty('bintray.apikey')
+version = libraryVersion
+group = 'com.anthonymandra'
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            artifact("$buildDir/outputs/aar/$archivesBaseName-release.aar")
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId this.group
+            artifactId 'ToggleButtons'
+            version this.version
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    // Ensure dependencies such as fileTree are not included in the pom.
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+bintray {
+    user = properties.getProperty('bintray.user')
+    key = properties.getProperty('bintray.key')
+    publications = ['mavenPublication']
+    override = true
+    pkg {
+        repo =              'maven'
+        name =              'ToggleButtons'
+        description =       'Android toggle buttons that adhere to the Material Design documentation.'
+        licenses =          ['MIT']
+        websiteUrl =        'https://github.com/rcketscientist/ToggleButtons'
+        vcsUrl =            'https://github.com/rcketscientist/ToggleButtons.git'
+        publish = true
+        dryRun = false
+
+        version {
+            name =          this.version
+            desc =          versionDescription
+            released =      new Date()
+        }
+    }
 }

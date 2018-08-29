@@ -1,21 +1,21 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionMajor = 2
+    versionMajor = 3
     versionMinor = 0
-    versionPatch = 0
+    versionPatch = 1
 
     libraryCode = versionMajor * 1000000 + versionMinor * 1000 + versionPatch
     libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+    versionDescription = 'androidx update'
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 28
 
         versionCode libraryCode
         versionName libraryVersion
@@ -30,18 +30,22 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
+    implementation "androidx.cardview:cardview:$cardviewVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
 }
 
+version = libraryVersion    // For bintray
 gradle.startParameter.taskNames.each { task ->
     def taskName = task.split(":").last()
     switch (taskName) {
         case "bintrayUpload":
             apply from: 'bintray.gradle'
-            break;
+            break
+        case "install":
+            apply from: 'bintray.gradle'
+            break
         default:
             // do nothing
-            break;
+            break
     }
 }

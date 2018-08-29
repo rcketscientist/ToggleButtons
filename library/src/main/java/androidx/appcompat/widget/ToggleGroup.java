@@ -1,4 +1,4 @@
-package android.support.v7.widget;
+package androidx.appcompat.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,12 @@ import com.anthonymandra.widget.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.ToggleGroupApi17;
+import androidx.cardview.widget.ToggleGroupApi21;
+import androidx.cardview.widget.ToggleGroupApi9;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ToggleGroup extends LinearLayoutCompat
@@ -317,7 +321,7 @@ public class ToggleGroup extends LinearLayoutCompat
 
     private void setCheckedStateForView(int viewId, boolean checked) {
         View checkedView = findViewById(viewId);
-        if (checkedView != null && checkedView instanceof CompoundButton) {
+        if (checkedView instanceof CompoundButton) {
             ((CompoundButton) checkedView).setChecked(checked);
         }
     }
@@ -411,7 +415,7 @@ public class ToggleGroup extends LinearLayoutCompat
 
     /**
      * <p>This set of layout parameters defaults the width and the height of
-     * the children to {@link #WRAP_CONTENT} when they are not specified in the
+     * the children to {@link ViewGroup.LayoutParams#WRAP_CONTENT} when they are not specified in the
      * XML file. Otherwise, this class uses the value read from the XML file.</p>
      *
      */
@@ -596,8 +600,6 @@ public class ToggleGroup extends LinearLayoutCompat
      * Set a drawable to be used as a divider between items.
      *
      * @param divider Drawable that will divide each item.
-     *
-     * @see #setShowDividers(int)
      */
     @Override
     public void setDividerDrawable(Drawable divider) {
@@ -713,7 +715,7 @@ public class ToggleGroup extends LinearLayoutCompat
      * Since setting this flag to true adds unnecessary gaps in the UI, default value is
      * <code>false</code>.
      *
-     * @param useCompatPadding <code>true></code> if ToggleGroup should add padding for the shadows on
+     * @param useCompatPadding <code>true</code> if ToggleGroup should add padding for the shadows on
      *      platforms Lollipop and above.
      */
     public void setUseCompatPadding(boolean useCompatPadding) {
