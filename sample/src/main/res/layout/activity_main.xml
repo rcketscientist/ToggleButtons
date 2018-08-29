@@ -40,23 +40,23 @@
             app:orientation="horizontal"
             app:allowUnselected="false">
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonAlignLeft"
                 style="@style/Widget.Material.ToggleButton"
                 android:button="@drawable/ic_format_align_left_black_24px" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonAlignCenter"
                 style="@style/Widget.Material.ToggleButton"
                 android:button="@drawable/ic_format_align_center_black_24px"
                 android:checked="true" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonAlignRight"
                 style="@style/Widget.Material.ToggleButton"
                 android:button="@drawable/ic_format_align_right_black_24px" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonJustify"
                 style="@style/Widget.Material.ToggleButton"
                 android:button="@drawable/ic_format_align_justify_black_24px" />
@@ -85,18 +85,18 @@
             app:orientation="horizontal"
             app:allowUnselected="true">
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonBold"
                 style="@style/PinkToggle"
                 android:button="@drawable/ic_format_bold_black_24px" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonItalic"
                 style="@style/PinkToggle"
                 android:button="@drawable/ic_format_italic_black_24px"
                 android:checked="true" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonUnderline"
                 style="@style/PinkToggle"
                 android:button="@drawable/ic_format_underlined_black_24px"
@@ -158,14 +158,14 @@
             app:orientation="horizontal"
             app:exclusive="true">
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonHorizontal"
                 style="@style/Widget.Material.ToggleButton"
                 android:checked="true"
                 android:text="@string/horizontal"
                 />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonVertical"
                 style="@style/Widget.Material.ToggleButton"
                 android:text="@string/vertical" />
@@ -191,12 +191,12 @@
             app:exclusive="true"
             app:orientation="horizontal">
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonExclusive"
                 style="@style/Widget.Material.ToggleButton"
                 android:text="@string/on" />
 
-            <android.support.v7.widget.ToggleButton
+            <androidx.appcompat.widget.ToggleButton
                 android:id="@+id/buttonNotExclusive"
                 style="@style/Widget.Material.ToggleButton"
                 android:checked="true"

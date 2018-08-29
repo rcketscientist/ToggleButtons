@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 ext {
     versionMajor = 3
     versionMinor = 0
-    versionPatch = 0
+    versionPatch = 1
 
     libraryCode = versionMajor * 1000000 + versionMinor * 1000 + versionPatch
     libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
