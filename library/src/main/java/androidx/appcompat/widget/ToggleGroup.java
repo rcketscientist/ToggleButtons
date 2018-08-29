@@ -415,7 +415,7 @@ public class ToggleGroup extends LinearLayoutCompat
 
     /**
      * <p>This set of layout parameters defaults the width and the height of
-     * the children to {@link #WRAP_CONTENT} when they are not specified in the
+     * the children to {@link ViewGroup.LayoutParams#WRAP_CONTENT} when they are not specified in the
      * XML file. Otherwise, this class uses the value read from the XML file.</p>
      *
      */
@@ -600,8 +600,6 @@ public class ToggleGroup extends LinearLayoutCompat
      * Set a drawable to be used as a divider between items.
      *
      * @param divider Drawable that will divide each item.
-     *
-     * @see #setShowDividers(int)
      */
     @Override
     public void setDividerDrawable(Drawable divider) {
@@ -717,7 +715,7 @@ public class ToggleGroup extends LinearLayoutCompat
      * Since setting this flag to true adds unnecessary gaps in the UI, default value is
      * <code>false</code>.
      *
-     * @param useCompatPadding <code>true></code> if ToggleGroup should add padding for the shadows on
+     * @param useCompatPadding <code>true</code> if ToggleGroup should add padding for the shadows on
      *      platforms Lollipop and above.
      */
     public void setUseCompatPadding(boolean useCompatPadding) {
