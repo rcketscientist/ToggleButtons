@@ -10,8 +10,14 @@ You can add the library with:
 `compile 'com.anthonymandra:ToggleButtons:2.0.0'`
 
 ## Recent Changes
+Version 3.0
 
-Version 2.0 adds backwards compatibility to API 9.  This changed the api for dividers slightly.
+Migrate to androidx.  Required a bump to minSdk 14.
+1. Package name changed to `androidx.appcompat.widget.` `ToggleButton`|`ToggleGroup`
+
+Version 2.0 
+
+Adds backwards compatibility to API 9.  This changed the api for dividers slightly.
 1. Divider is now in the custom namespace:  `app:divider`
 2. Divider can no longer support tint.  You'll need to create custom drawbles.
 
