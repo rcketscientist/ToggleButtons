@@ -7,7 +7,7 @@ This library adds two custom widgets that adhere to the Material Design definiti
 
 You can add the library with:
 
-`compile 'com.anthonymandra:ToggleButtons:2.0.0'`
+`compile 'com.anthonymandra:ToggleButtons:3.0.1'`
 
 ## Recent Changes
 Version 3.0
