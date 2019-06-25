@@ -1,4 +1,8 @@
- [ ![Download](https://api.bintray.com/packages/rcketscientist/maven/ToggleButtons/images/download.svg) ](https://bintray.com/rcketscientist/maven/ToggleButtons/_latestVersion)
+# Google finally released an official version:
+# [`MaterialButtonToggleGroup`](https://github.com/material-components/material-components-android/blob/master/docs/components/MaterialButtonToggleGroup.md)
+# I recommend using this instead unless a deficiency is found.
+
+[ ![Download](https://api.bintray.com/packages/rcketscientist/maven/ToggleButtons/images/download.svg) ](https://bintray.com/rcketscientist/maven/ToggleButtons/_latestVersion)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 # ToggleButtons
