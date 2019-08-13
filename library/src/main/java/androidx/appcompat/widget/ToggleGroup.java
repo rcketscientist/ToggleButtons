@@ -123,7 +123,7 @@ public class ToggleGroup extends LinearLayoutCompat
                     : getResources().getColor(R.color.toggleGroup_dark_background));
         }
 
-        int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedButton, View.NO_ID);
+        int value = attributes.getResourceId(R.styleable.ToggleGroup_checkedToggleButton, View.NO_ID);
         if (value != NO_ID) {
             addCheckedId(value); // We set this even if not exclusive to help with designer
 
