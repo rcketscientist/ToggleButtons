@@ -4,7 +4,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha07'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
@@ -19,8 +19,8 @@ allprojects {
 
 ext {
     compileSdkVersion = 28
-    appcompatVersion = "1.0.0-rc01"
-    cardviewVersion = "1.0.0-rc01"
+    appcompatVersion = "1.0.2"
+    cardviewVersion = "1.0.0"
 }
 
 task clean(type: Delete) {
